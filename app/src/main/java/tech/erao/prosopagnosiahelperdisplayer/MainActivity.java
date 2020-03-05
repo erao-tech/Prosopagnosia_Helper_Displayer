@@ -1,11 +1,11 @@
 package tech.erao.prosopagnosiahelperdisplayer;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
+public class MainActivity extends ActionMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
