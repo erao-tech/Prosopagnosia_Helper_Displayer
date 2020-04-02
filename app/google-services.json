@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "884982498582",
+    "firebase_url": "https://ece516-a76ff.firebaseio.com",
+    "project_id": "ece516-a76ff",
+    "storage_bucket": "ece516-a76ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884982498582:android:75d721a63a44bcf96efc37",
+        "android_client_info": {
+          "package_name": "tech.erao.prosopagnosiahelperdisplayer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884982498582-caligosc0ag06tr2sri9d1ts5eerfmn7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.erao.prosopagnosiahelperdisplayer",
+            "certificate_hash": "193bd0510a845f2a12837b5f63886f16f604cd2b"
+          }
+        },
+        {
+          "client_id": "884982498582-h7u5imteum9uramdkahjodr2gps2us47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAholb1WBvyz9RLousy4FM-J5SI1SWGzTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884982498582-h7u5imteum9uramdkahjodr2gps2us47.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
