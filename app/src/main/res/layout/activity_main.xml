@@ -10,8 +10,8 @@
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello World!"
         android:gravity="center"
+        android:text="Tap to take photo"
         android:textSize="20sp" />
 
 </RelativeLayout>
