@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +44,7 @@ public class MainActivity extends ActionMenuActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private StorageReference mStorageRef;
     private FirebaseAuth myFirebaseAuth;
+    private  ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class MainActivity extends ActionMenuActivity {
         setContentView(R.layout.activity_main);
 
         user_name = findViewById(R.id.user_name);
+        progressBar = findViewById(R.id.inProgress);
+        progressBar.setVisibility(View.INVISIBLE);
 
 
 
@@ -66,8 +72,8 @@ public class MainActivity extends ActionMenuActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 user_name.setText(response.toString());
-                System.out.println(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -109,15 +115,27 @@ public class MainActivity extends ActionMenuActivity {
         Volley.newRequestQueue(getContext()).add(stringRequest);
     }
 
+//    @Override
+//    public boolean onTrackballEvent(MotionEvent event) {
+//        System.out.println("====");
+//        return true;
+//    }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        single click for the touchpad
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            dispatchTakePictureIntent();
-        }
+    public boolean dispatchTrackballEvent(MotionEvent ev) {
+        progressBar.setVisibility(View.VISIBLE);
+        dispatchTakePictureIntent();
         return true;
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+////        single click for the touchpad
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+//            dispatchTakePictureIntent();
+//        }
+//        return false;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
