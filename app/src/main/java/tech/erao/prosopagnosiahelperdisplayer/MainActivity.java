@@ -36,6 +36,7 @@ public class MainActivity extends ActionMenuActivity {
     private  ProgressBar progressBar;
     private static final String URL = "http://52.55.117.58:5000/whichface-api";
     private static final String UNINIT_HINT = "Image matches none of the face in database";
+    private static final String NOT_YET_INIT_PREFIX = "Not yet init";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MainActivity extends ActionMenuActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent ev) {
         progressBar.setVisibility(View.VISIBLE);
+        user_name.setText(R.string.processing_hint);
         dispatchTakePictureIntent();
         return true;
     }
@@ -65,11 +67,12 @@ public class MainActivity extends ActionMenuActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (!response.equals(UNINIT_HINT)) {
-                    progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                if (response.contains(NOT_YET_INIT_PREFIX)) {
+                    user_name.setText(R.string.not_yet_init_hint);
+                } else if (!response.equals(UNINIT_HINT)) {
                     user_name.setText(response);
                 } else {
-                    progressBar.setVisibility(View.INVISIBLE);
                     user_name.setText(R.string.init_hint);
                 }
             }
