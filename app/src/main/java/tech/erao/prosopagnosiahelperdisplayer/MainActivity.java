@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,7 +35,7 @@ public class MainActivity extends ActionMenuActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private  ProgressBar progressBar;
     private static final String URL = "http://52.55.117.58:5000/whichface-api";
-    private Pair<Float, Float> location;
+    private boolean isInit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +56,20 @@ public class MainActivity extends ActionMenuActivity {
         switch (ev.getKeyCode()) {
 
             case KeyEvent.KEYCODE_FORWARD_DEL: {
-                System.out.println("======++++++++++++++++++++++++++++++++++++++++++++++++++++==");
-                // store the X value when the user's finger was pressed down
-//                System.out.println("DOWN: " + ev.getX() + "|" + ev.getY());
-//                location = new Pair<>(ev.getX(), ev.getY());
+                // in case moving forward
+                isInit = false;
+                progressBar.setVisibility(View.VISIBLE);
+                dispatchTakePictureIntent();
                 break;
             }
             case  KeyEvent.KEYCODE_DEL: {
-                System.out.println("======================================================");
-                // store the X value when the user's finger was pressed down
-//                if (location != null) {
-//                    System.out.println("UP: " + ev.getX() + "|" + ev.getY());
-//                    float xMov = location.first - ev.getX();
-//                    float yMov = location.second - ev.getY();
-//                    System.out.println(xMov + "|" + yMov);
-//                }
+                // in case moving backword
+                isInit = true;
+                progressBar.setVisibility(View.VISIBLE);
+                dispatchTakePictureIntent();
                 break;
             }
         }
-        progressBar.setVisibility(View.VISIBLE);
-        dispatchTakePictureIntent();
         return true;
     }
 
@@ -89,8 +81,13 @@ public class MainActivity extends ActionMenuActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                progressBar.setVisibility(View.INVISIBLE);
-                user_name.setText(response.toString());
+                if (!isInit) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    user_name.setText(response.toString());
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    user_name.setText(R.string.init_hint);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
