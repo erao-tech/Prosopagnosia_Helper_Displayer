@@ -45,10 +45,21 @@ public class MainActivity extends ActionMenuActivity {
         progressBar = findViewById(R.id.inProgress);
         progressBar.setVisibility(View.INVISIBLE);
 
+    }
 
 
 
-
+    @Override
+    public boolean dispatchTrackballEvent(MotionEvent ev) {
+        System.out.println("V" + (ev.getAxisValue(ev.AXIS_VSCROLL)));
+        System.out.println("H" + (ev.getAxisValue(ev.AXIS_VSCROLL)));
+        System.out.println("VUP" + (ev.getAxisValue(ev.AXIS_VSCROLL) > 0f));
+        System.out.println("VDOWN" + (ev.getAxisValue(ev.AXIS_VSCROLL) < 0f));
+        System.out.println("HRIGHT" + (ev.getAxisValue(ev.AXIS_HSCROLL) > 0f));
+        System.out.println("HLEFT" + (ev.getAxisValue(ev.AXIS_HSCROLL) < 0f));
+        progressBar.setVisibility(View.VISIBLE);
+        dispatchTakePictureIntent();
+        return true;
     }
 
     private void sendThroughHTTP(Bitmap pic) throws IOException {
@@ -76,7 +87,7 @@ public class MainActivity extends ActionMenuActivity {
 
                 String base64Encoded = null;
 
-                    base64Encoded = Base64.encodeBytes(image);
+                base64Encoded = Base64.encodeBytes(image);
 
                 postMap.put("img", base64Encoded);
                 return postMap;
@@ -101,13 +112,6 @@ public class MainActivity extends ActionMenuActivity {
 
         //make the request to your server as indicated in your request url
         Volley.newRequestQueue(getContext()).add(stringRequest);
-    }
-
-    @Override
-    public boolean dispatchTrackballEvent(MotionEvent ev) {
-        progressBar.setVisibility(View.VISIBLE);
-        dispatchTakePictureIntent();
-        return true;
     }
 
     @Override
