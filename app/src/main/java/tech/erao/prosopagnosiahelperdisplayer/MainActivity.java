@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -52,23 +53,26 @@ public class MainActivity extends ActionMenuActivity {
 
 
     @Override
-    public boolean dispatchTrackballEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
+    public boolean dispatchKeyEvent(KeyEvent ev) {
 
-            case MotionEvent.ACTION_DOWN: {
+        switch (ev.getKeyCode()) {
+
+            case KeyEvent.KEYCODE_FORWARD_DEL: {
+                System.out.println("======++++++++++++++++++++++++++++++++++++++++++++++++++++==");
                 // store the X value when the user's finger was pressed down
-                System.out.println("DOWN: " + ev.getX() + "|" + ev.getY());
-                location = new Pair<>(ev.getX(), ev.getY());
+//                System.out.println("DOWN: " + ev.getX() + "|" + ev.getY());
+//                location = new Pair<>(ev.getX(), ev.getY());
                 break;
             }
-            case MotionEvent.ACTION_UP: {
+            case  KeyEvent.KEYCODE_DEL: {
+                System.out.println("======================================================");
                 // store the X value when the user's finger was pressed down
-                if (location != null) {
-                    System.out.println("UP: " + ev.getX() + "|" + ev.getY());
-                    float xMov = location.first - ev.getX();
-                    float yMov = location.second - ev.getY();
-                    System.out.println(xMov + "|" + yMov);
-                }
+//                if (location != null) {
+//                    System.out.println("UP: " + ev.getX() + "|" + ev.getY());
+//                    float xMov = location.first - ev.getX();
+//                    float yMov = location.second - ev.getY();
+//                    System.out.println(xMov + "|" + yMov);
+//                }
                 break;
             }
         }
