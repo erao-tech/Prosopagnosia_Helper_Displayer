@@ -34,9 +34,10 @@ public class MainActivity extends ActionMenuActivity {
     private TextView user_name;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private  ProgressBar progressBar;
-    private static final String URL = "http://52.55.117.58:5000/whichface-api";
+    private static final String URL = "http://192.168.0.15:5000/whichface-api";
     private static final String UNINIT_HINT = "Image matches none of the face in database";
     private static final String NOT_YET_INIT_PREFIX = "Not yet init";
+    private double id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends ActionMenuActivity {
         user_name = findViewById(R.id.user_name);
         progressBar = findViewById(R.id.inProgress);
         progressBar.setVisibility(View.INVISIBLE);
+        id = Math.random();
 
     }
 
@@ -70,10 +72,12 @@ public class MainActivity extends ActionMenuActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 if (response.contains(NOT_YET_INIT_PREFIX)) {
                     user_name.setText(R.string.not_yet_init_hint);
-                } else if (!response.equals(UNINIT_HINT)) {
-                    user_name.setText(response);
-                } else {
+                } else if (response.equals(UNINIT_HINT)) {
                     user_name.setText(R.string.init_hint);
+                } else if (response.equals("Duplicated request")){
+                    // do nothing
+                } else {
+                    user_name.setText(response);
                 }
             }
         }, new Response.ErrorListener() {
@@ -93,6 +97,7 @@ public class MainActivity extends ActionMenuActivity {
                 base64Encoded = Base64.encodeBytes(image);
 
                 postMap.put("img", base64Encoded);
+                postMap.put("requestId", id + "");
                 return postMap;
             }
         };
