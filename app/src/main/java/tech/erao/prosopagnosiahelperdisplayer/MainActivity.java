@@ -4,14 +4,11 @@ package tech.erao.prosopagnosiahelperdisplayer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,18 +17,12 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.StorageReference;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
 import net.iharder.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,9 +33,8 @@ import java.util.Map;
 public class MainActivity extends ActionMenuActivity {
     private TextView user_name;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private StorageReference mStorageRef;
-    private FirebaseAuth myFirebaseAuth;
     private  ProgressBar progressBar;
+    private static final String URL = "http://52.55.117.58:5000/whichface-api";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +52,11 @@ public class MainActivity extends ActionMenuActivity {
     }
 
     private void sendThroughHTTP(Bitmap pic) throws IOException {
-//        URL source = new URL("https://www.ece.utoronto.ca/wp-content/uploads/2013/02/SteveMann2-45.jpg");
-//        Bitmap bmp = BitmapFactory.decodeStream(source.openConnection().getInputStream());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         pic.compress(Bitmap.CompressFormat.PNG, 100, stream);
         final byte[] image = stream.toByteArray();
 
-        String url = "http://52.55.117.58:5000/whichface-api";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressBar.setVisibility(View.INVISIBLE);
@@ -111,15 +98,10 @@ public class MainActivity extends ActionMenuActivity {
 
             }
         });
-//make the request to your server as indicated in your request url
+
+        //make the request to your server as indicated in your request url
         Volley.newRequestQueue(getContext()).add(stringRequest);
     }
-
-//    @Override
-//    public boolean onTrackballEvent(MotionEvent event) {
-//        System.out.println("====");
-//        return true;
-//    }
 
     @Override
     public boolean dispatchTrackballEvent(MotionEvent ev) {
@@ -128,26 +110,11 @@ public class MainActivity extends ActionMenuActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-////        single click for the touchpad
-//        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-//            dispatchTakePictureIntent();
-//        }
-//        return false;
-//    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             byte[] image = data.getExtras().getByteArray("image_arr");
             final Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-//            byte[] imgfile = baos.toByteArray();
-//            Toast.makeText(getApplicationContext(), "Finished",
-//            Toast.LENGTH_SHORT).show();
-            //todo: Create a POST HTTP REQUEST with url above, convert the bitmap file to .JPG and attach it in request.files with key="img", see ApiTester.py in Flask Server
 
             Thread thread = new Thread(new Runnable() {
 
