@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Prosopagnosia Helper Displayer</string>
-    <string name="init_hint">New friend added. Please add his name later.</string>
+    <string name="init_hint">Wow, a new friend! Please add the name later!</string>
 </resources>

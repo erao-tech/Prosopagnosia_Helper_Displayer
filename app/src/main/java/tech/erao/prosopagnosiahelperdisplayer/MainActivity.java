@@ -35,7 +35,7 @@ public class MainActivity extends ActionMenuActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private  ProgressBar progressBar;
     private static final String URL = "http://52.55.117.58:5000/whichface-api";
-    private boolean isInit = false;
+    private static final String UNINIT_HINT = "Image matches none of the face in database";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,24 +52,8 @@ public class MainActivity extends ActionMenuActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent ev) {
-
-        switch (ev.getKeyCode()) {
-
-            case KeyEvent.KEYCODE_FORWARD_DEL: {
-                // in case moving forward
-                isInit = false;
-                progressBar.setVisibility(View.VISIBLE);
-                dispatchTakePictureIntent();
-                break;
-            }
-            case  KeyEvent.KEYCODE_DEL: {
-                // in case moving backword
-                isInit = true;
-                progressBar.setVisibility(View.VISIBLE);
-                dispatchTakePictureIntent();
-                break;
-            }
-        }
+        progressBar.setVisibility(View.VISIBLE);
+        dispatchTakePictureIntent();
         return true;
     }
 
@@ -81,9 +65,9 @@ public class MainActivity extends ActionMenuActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (!isInit) {
+                if (!response.equals(UNINIT_HINT)) {
                     progressBar.setVisibility(View.INVISIBLE);
-                    user_name.setText(response.toString());
+                    user_name.setText(response);
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
                     user_name.setText(R.string.init_hint);
