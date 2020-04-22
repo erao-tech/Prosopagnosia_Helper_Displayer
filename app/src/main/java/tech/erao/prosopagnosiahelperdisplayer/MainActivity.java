@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionMenuActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private  ProgressBar progressBar;
     private static final String URL = "http://52.55.117.58:5000/whichface-api";
+    private Pair<Float, Float> location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,25 @@ public class MainActivity extends ActionMenuActivity {
 
     @Override
     public boolean dispatchTrackballEvent(MotionEvent ev) {
-        System.out.println("V" + (ev.getAxisValue(ev.AXIS_VSCROLL)));
-        System.out.println("H" + (ev.getAxisValue(ev.AXIS_VSCROLL)));
-        System.out.println("VUP" + (ev.getAxisValue(ev.AXIS_VSCROLL) > 0f));
-        System.out.println("VDOWN" + (ev.getAxisValue(ev.AXIS_VSCROLL) < 0f));
-        System.out.println("HRIGHT" + (ev.getAxisValue(ev.AXIS_HSCROLL) > 0f));
-        System.out.println("HLEFT" + (ev.getAxisValue(ev.AXIS_HSCROLL) < 0f));
+        switch (ev.getAction()) {
+
+            case MotionEvent.ACTION_DOWN: {
+                // store the X value when the user's finger was pressed down
+                System.out.println("DOWN: " + ev.getX() + "|" + ev.getY());
+                location = new Pair<>(ev.getX(), ev.getY());
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                // store the X value when the user's finger was pressed down
+                if (location != null) {
+                    System.out.println("UP: " + ev.getX() + "|" + ev.getY());
+                    float xMov = location.first - ev.getX();
+                    float yMov = location.second - ev.getY();
+                    System.out.println(xMov + "|" + yMov);
+                }
+                break;
+            }
+        }
         progressBar.setVisibility(View.VISIBLE);
         dispatchTakePictureIntent();
         return true;
