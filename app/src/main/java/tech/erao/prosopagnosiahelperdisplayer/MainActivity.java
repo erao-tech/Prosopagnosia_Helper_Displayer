@@ -55,9 +55,13 @@ public class MainActivity extends ActionMenuActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent ev) {
-        progressBar.setVisibility(View.VISIBLE);
-        user_name.setText(R.string.processing_hint);
-        dispatchTakePictureIntent();
+        super.dispatchKeyEvent(ev);
+        if (ev.getKeyCode() == KeyEvent.KEYCODE_FORWARD_DEL || ev.getKeyCode() == KeyEvent.KEYCODE_DEL ||
+                ev.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT || ev.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+            progressBar.setVisibility(View.VISIBLE);
+            user_name.setText(R.string.processing_hint);
+            dispatchTakePictureIntent();
+        }
         return true;
     }
 
@@ -73,12 +77,13 @@ public class MainActivity extends ActionMenuActivity {
             @Override
             public void onResponse(String response) {
                 //Response to the server reply
-                progressBar.setVisibility(View.INVISIBLE);
                 if (response.contains(NOT_YET_INIT_PREFIX)) {
+                    progressBar.setVisibility(View.INVISIBLE);
                     user_name.setText(response + "This is a reference face in database without name tag, you can add a name tag through web app");
                 } else if (response.equals("Duplicated request")){
                     // do nothing
                 } else {
+                    progressBar.setVisibility(View.INVISIBLE);
                     user_name.setText(response);
                 }
             }
