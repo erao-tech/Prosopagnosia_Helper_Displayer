@@ -22,7 +22,6 @@ import com.vuzix.hud.actionmenu.ActionMenuActivity;
 import net.iharder.Base64;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,11 +50,17 @@ public class MainActivity extends ActionMenuActivity {
 
     }
 
-
-
+    /**
+     * This method is used to trigger the touch pad event
+     *
+     * @param ev the KeyEvent the system provided
+     * @return return true by default
+     */
     @Override
     public boolean dispatchKeyEvent(KeyEvent ev) {
+        // call the pre-defined method in its parent class. Note that the parent class is not the the one the Android provided.
         super.dispatchKeyEvent(ev);
+        // handle the picture taking event
         if (ev.getKeyCode() == KeyEvent.KEYCODE_FORWARD_DEL || ev.getKeyCode() == KeyEvent.KEYCODE_DEL ||
                 ev.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT || ev.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
             progressBar.setVisibility(View.VISIBLE);
@@ -66,8 +71,12 @@ public class MainActivity extends ActionMenuActivity {
     }
 
 
-
-    private void sendThroughHTTP(Bitmap pic) throws IOException {
+    /**
+     * Send the bitmap file through the HTTP POST request
+     *
+     * @param pic the picture to be sent, in Bitmap format
+     */
+    private void sendThroughHTTP(Bitmap pic) {
         //Function used to send the HTTP request to the server with a bitmap image attached
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         pic.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -129,12 +138,19 @@ public class MainActivity extends ActionMenuActivity {
         Volley.newRequestQueue(getContext()).add(stringRequest);
     }
 
+    /**
+     * Handle the result the picture taking activity returned
+     * @param requestCode the request code
+     * @param resultCode the result code
+     * @param data the intent trigger the method
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             byte[] image = data.getExtras().getByteArray("image_arr");
             final Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
 
+            // send the HTTP POST request async
             Thread thread = new Thread(new Runnable() {
 
                 @Override
@@ -151,6 +167,9 @@ public class MainActivity extends ActionMenuActivity {
         }
     }
 
+    /**
+     * taking img
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(this, PicAutoCapture.class);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {

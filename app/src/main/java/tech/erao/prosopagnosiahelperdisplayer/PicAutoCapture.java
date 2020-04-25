@@ -33,9 +33,13 @@ public class PicAutoCapture extends Activity implements SurfaceHolder.Callback {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // this activity is used to taking the picture only. It will be killed right after the image is taken
         capture();
     }
 
+    /**
+     * taking the picture
+     */
     private void capture() {
         mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
 
@@ -59,8 +63,6 @@ public class PicAutoCapture extends Activity implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
-        Log.e("Surface Changed", "format   ==   " + format + ",   width  ===  "
-                + width + ", height   ===    " + height);
         try {
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
