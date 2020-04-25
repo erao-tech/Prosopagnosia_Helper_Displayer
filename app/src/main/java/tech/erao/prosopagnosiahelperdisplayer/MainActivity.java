@@ -34,9 +34,9 @@ public class MainActivity extends ActionMenuActivity {
     private TextView user_name;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private  ProgressBar progressBar;
-    private static final String URL = "http://192.168.0.15:5000/whichface-api";
+    private static final String URL = "http://52.55.117.58:5000//whichface-api";
     private static final String UNINIT_HINT = "Image matches none of the face in database";
-    private static final String NOT_YET_INIT_PREFIX = "Not yet init";
+    private static final String NOT_YET_INIT_PREFIX = "reference_face_";
     private double id;
 
     @Override
@@ -61,7 +61,10 @@ public class MainActivity extends ActionMenuActivity {
         return true;
     }
 
+
+
     private void sendThroughHTTP(Bitmap pic) throws IOException {
+        //Function used to send the HTTP request to the server with a bitmap image attached
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         pic.compress(Bitmap.CompressFormat.PNG, 100, stream);
         final byte[] image = stream.toByteArray();
@@ -69,11 +72,10 @@ public class MainActivity extends ActionMenuActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                //Response to the server reply
                 progressBar.setVisibility(View.INVISIBLE);
                 if (response.contains(NOT_YET_INIT_PREFIX)) {
-                    user_name.setText(R.string.not_yet_init_hint);
-                } else if (response.equals(UNINIT_HINT)) {
-                    user_name.setText(R.string.init_hint);
+                    user_name.setText(response + "This is a reference face in database without name tag, you can add a name tag through web app");
                 } else if (response.equals("Duplicated request")){
                     // do nothing
                 } else {

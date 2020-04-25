@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Prosopagnosia Helper Displayer</string>
-    <string name="init_hint">Wow, a new friend! Please add the name later!</string>
+    <string name="init_hint">A new face captured, please add name tag later through web app.</string>
     <string name="processing_hint">Processing...</string>
-    <string name="not_yet_init_hint">Oops, you did not add name for this person :(</string>
+    <string name="not_yet_init_hint">This is a reference face in database without name tag, you can add a name tag through web app</string>
 </resources>
